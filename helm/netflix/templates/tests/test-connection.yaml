@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "{{ include "netflix.fullname" . }}-test-connection"
+  labels:
+    {{- include "netflix.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": test
+spec:
+  containers:
+    - name: wget
+      image: busybox
+      command: ['wget']
+      args: ['{{ include "netflix.fullname" . }}:{{ .Values.service.port }}']
+  restartPolicy: Never
